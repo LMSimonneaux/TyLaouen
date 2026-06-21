@@ -262,7 +262,7 @@ export function BookingDialog({
 
         <div>
           <label className="mb-2 block text-sm font-medium">
-            Maison(s) — coche celles que tu occupes
+            Maison(s) — coche celles occupées
           </label>
           <div className="space-y-2">
             {houses.map((h) => {

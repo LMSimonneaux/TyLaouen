@@ -4,6 +4,9 @@ export type House = {
   capacity: number;
   color: string;
   sort_order: number;
+  wifi_network: string | null; // nom du réseau wifi
+  wifi_password: string | null; // mot de passe wifi
+  info: string | null; // autres infos pratiques : codes, consignes…
 };
 
 export type Booking = {
