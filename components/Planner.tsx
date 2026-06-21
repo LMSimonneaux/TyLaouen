@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase, supabaseConfigured } from "@/lib/supabase";
 import type { Booking, House } from "@/lib/types";
 import { formatHuman, todayISO } from "@/lib/dates";
+import { Hero } from "./Hero";
 import { Timeline } from "./Timeline";
 import { BookingDialog } from "./BookingDialog";
 import { SettingsDialog } from "./SettingsDialog";
@@ -97,11 +98,37 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...`}
 
   return (
     <div className="mx-auto flex min-h-full max-w-6xl flex-col gap-5 px-4 py-6 sm:px-6">
-      {/* En-tête */}
-      <header className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-bold tracking-tight sm:text-2xl">TyLaouen</h1>
-          <p className="text-sm text-muted">Réservations — famille Simonneaux</p>
+      {/* Bannière */}
+      <Hero />
+
+      {/* Barre d'outils : navigation année + actions */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => setYear((y) => y - 1)}
+              aria-label="Année précédente"
+              className="grid h-9 w-9 place-items-center rounded-lg border border-border bg-surface text-muted transition hover:text-text"
+            >
+              ‹
+            </button>
+            <span className="w-16 text-center text-base font-bold tabular-nums">
+              {year}
+            </span>
+            <button
+              onClick={() => setYear((y) => y + 1)}
+              aria-label="Année suivante"
+              className="grid h-9 w-9 place-items-center rounded-lg border border-border bg-surface text-muted transition hover:text-text"
+            >
+              ›
+            </button>
+          </div>
+          <button
+            onClick={goToday}
+            className="rounded-lg border border-border bg-surface px-3 py-2 text-sm font-medium text-muted transition hover:text-text"
+          >
+            Aujourd&apos;hui
+          </button>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -154,35 +181,6 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...`}
             Réserver
           </button>
         </div>
-      </header>
-
-      {/* Barre de navigation année */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1">
-          <button
-            onClick={() => setYear((y) => y - 1)}
-            aria-label="Année précédente"
-            className="grid h-9 w-9 place-items-center rounded-lg border border-border bg-surface text-muted transition hover:text-text"
-          >
-            ‹
-          </button>
-          <span className="w-16 text-center text-base font-bold tabular-nums">
-            {year}
-          </span>
-          <button
-            onClick={() => setYear((y) => y + 1)}
-            aria-label="Année suivante"
-            className="grid h-9 w-9 place-items-center rounded-lg border border-border bg-surface text-muted transition hover:text-text"
-          >
-            ›
-          </button>
-        </div>
-        <button
-          onClick={goToday}
-          className="rounded-lg border border-border bg-surface px-3 py-2 text-sm font-medium text-muted transition hover:text-text"
-        >
-          Aujourd&apos;hui
-        </button>
       </div>
 
       {error && (
