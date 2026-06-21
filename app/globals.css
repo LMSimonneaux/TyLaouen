@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #f7f4ef;
+  --surface: #ffffff;
+  --text: #211c19;
+  --muted: #8a807a;
+  --border: #ebe5dd;
+  --accent: #1f1a17;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-geist-sans);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar discrète pour la timeline */
+.tl-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #d6cec3 transparent;
+}
+.tl-scroll::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+.tl-scroll::-webkit-scrollbar-thumb {
+  background: #d6cec3;
+  border-radius: 999px;
+}
+.tl-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
