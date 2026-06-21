@@ -5,6 +5,7 @@ import { supabase, supabaseConfigured } from "@/lib/supabase";
 import type { Booking, House } from "@/lib/types";
 import { formatHuman, todayISO } from "@/lib/dates";
 import { Hero } from "./Hero";
+import { SiteNav } from "./SiteNav";
 import { Timeline } from "./Timeline";
 import { BookingDialog } from "./BookingDialog";
 import { SettingsDialog } from "./SettingsDialog";
@@ -100,6 +101,8 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...`}
     <div className="mx-auto flex min-h-full max-w-6xl flex-col gap-5 px-4 py-6 sm:px-6">
       {/* Bannière */}
       <Hero />
+
+      <SiteNav active="maisons" />
 
       {/* Barre d'outils : navigation année + actions */}
       <div className="flex flex-wrap items-center justify-between gap-3">

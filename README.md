@@ -1,15 +1,20 @@
 # TyLaouen — réservations
 
-Petit planning de réservation pour les maisons de la famille Simonneaux :
-**TyLaouen**, **Grand Penty**, **Petit Penty**.
+Petit planning de réservation pour la famille Simonneaux :
+**maisons** (TyLaouen, Grand Penty, Petit Penty) et **voitures** (Peugeot 206,
+Mercedes).
 
-- 📅 Timeline annuelle, une ligne par maison (style Gantt)
-- ➕ Réserver un séjour sur plusieurs jours, sur une ou plusieurs maisons
-- 👥 Nombre de personnes par maison + **blocage si la maison est complète**
-- ✏️ Modifier / annuler son séjour
-- ⚙️ Capacités des maisons réglables dans l'app
-- 🔄 Temps réel : tout le monde voit les séjours des autres instantanément
+- 📅 Timeline annuelle, une ligne par maison / voiture (style Gantt)
+- ➕ Réserver un séjour (maisons) ou une voiture sur plusieurs jours
+- 👥 Maisons : nombre de personnes + **blocage si la maison est complète**
+- 🚗 Voitures : état **fonctionnelle / au garage / réservée** + **blocage si déjà prise**
+- ✏️ Modifier / annuler une réservation
+- ⚙️ Capacités des maisons et état des voitures réglables dans l'app
+- 🔄 Temps réel : tout le monde voit les réservations des autres instantanément
 - 🔓 Sans compte : on tape son nom, accès par lien partagé
+
+Navigation entre les deux plannings via les onglets **Maisons / Voitures**
+(page voitures : `/voitures`).
 
 Stack : Next.js (App Router) · React · Tailwind · Supabase · déploiement Vercel.
 
@@ -20,8 +25,11 @@ Stack : Next.js (App Router) · React · Tailwind · Supabase · déploiement Ve
 1. Crée un projet sur [supabase.com](https://supabase.com) (gratuit).
 2. Ouvre **SQL Editor → New query**, colle le contenu de
    [`supabase/schema.sql`](./supabase/schema.sql) et clique **Run**.
-   → Ça crée les tables `houses` / `bookings`, ajoute les 3 maisons et active
-   le temps réel.
+   → Ça crée les tables `houses` / `bookings` / `cars` / `car_bookings`, ajoute
+   les 3 maisons et les 2 voitures, et active le temps réel.
+   _Base déjà en place ?_ exécute plutôt
+   [`supabase/migration_cars.sql`](./supabase/migration_cars.sql) pour n'ajouter
+   que les voitures (sans danger si déjà appliqué).
 3. Dans **Project Settings → API**, récupère :
    - **Project URL** → `NEXT_PUBLIC_SUPABASE_URL`
    - **anon public** key → `NEXT_PUBLIC_SUPABASE_ANON_KEY`

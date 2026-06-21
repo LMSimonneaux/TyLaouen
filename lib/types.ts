@@ -26,3 +26,30 @@ export type HousePick = {
   house_id: string;
   occupants: number;
 };
+
+// =========================================================
+// Voitures
+// =========================================================
+
+// État réglable manuellement. « réservée » n'est pas stocké : il est déduit
+// du calendrier (une réservation couvre aujourd'hui).
+export type CarStatus = "fonctionnelle" | "au_garage";
+
+export type Car = {
+  id: string;
+  name: string;
+  status: CarStatus;
+  color: string;
+  sort_order: number;
+  info: string | null; // infos pratiques : assurance, où sont les clés, contrôle technique…
+};
+
+export type CarBooking = {
+  id: string;
+  car_id: string;
+  guest_name: string;
+  start_date: string; // "YYYY-MM-DD" — début (inclus)
+  end_date: string; // "YYYY-MM-DD" — fin (matin, exclu)
+  note: string | null;
+  created_at: string;
+};
