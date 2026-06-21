@@ -190,14 +190,14 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...`}
           }
         />
       )}
-      
+
       {/* Séjours à venir */}
       {!loading && (
         <section className="mt-2">
           <h2 className="mb-3 text-sm font-semibold text-muted">Séjours à venir</h2>
           {groups.length === 0 ? (
             <p className="rounded-xl border border-dashed border-border bg-surface px-4 py-6 text-center text-sm text-muted">
-              Aucun séjour à venir. Clique sur « Réserver » pour commencer.
+              Aucun séjour à venir.
             </p>
           ) : (
             <ul className="space-y-2">
