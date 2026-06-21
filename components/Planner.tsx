@@ -190,12 +190,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...`}
           }
         />
       )}
-
-      <p className="text-xs text-muted">
-        Astuce : clique sur une case du planning pour réserver ce jour, ou sur un
-        séjour existant pour le modifier ou l&apos;annuler.
-      </p>
-
+      
       {/* Séjours à venir */}
       {!loading && (
         <section className="mt-2">
