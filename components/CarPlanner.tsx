@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase, supabaseConfigured } from "@/lib/supabase";
 import type { Car, CarBooking } from "@/lib/types";
 import { formatHuman, todayISO } from "@/lib/dates";
+import { Hero } from "./Hero";
 import { SiteNav } from "./SiteNav";
 import { CarTimeline } from "./CarTimeline";
 import { CarStatusCards } from "./CarStatusCards";
@@ -89,13 +90,10 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...`}
 
   return (
     <div className="mx-auto flex min-h-full max-w-6xl flex-col gap-5 px-4 py-6 sm:px-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Les voitures</h1>
-          <p className="text-sm text-muted">Réservations — famille Simonneaux</p>
-        </div>
-        <SiteNav active="voitures" />
-      </div>
+      {/* Bannière */}
+      <Hero />
+
+      <SiteNav active="voitures" />
 
       {/* Barre d'outils : navigation année + actions */}
       <div className="flex flex-wrap items-center justify-between gap-3">
