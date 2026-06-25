@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase, supabaseConfigured } from "@/lib/supabase";
 import type { Booking, House } from "@/lib/types";
-import { formatHuman, todayISO } from "@/lib/dates";
+import { addDaysISO, formatHuman, todayISO } from "@/lib/dates";
 import { Hero } from "./Hero";
 import { SiteNav } from "./SiteNav";
 import { Timeline } from "./Timeline";
@@ -235,7 +235,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...`}
                           {formatHuman(rows[0].start_date, refYear)}
                         </div>
                         <div className="text-xs text-muted">
-                          → {formatHuman(rows[0].end_date, refYear)}
+                          → {formatHuman(addDaysISO(rows[0].end_date, -1), refYear)}
                         </div>
                       </div>
                       <div className="min-w-0 flex-1">
@@ -259,6 +259,11 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...`}
                             );
                           })}
                         </div>
+                        {rows[0].note && (
+                          <p className="mt-1.5 text-xs text-muted line-clamp-2 sm:hidden">
+                            {rows[0].note}
+                          </p>
+                        )}
                       </div>
                       {rows[0].note && (
                         <span className="hidden max-w-[30%] truncate text-xs text-muted sm:block">

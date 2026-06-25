@@ -53,7 +53,8 @@ export function BookingDialog({
         name: groupRows[0].guest_name,
         note: groupRows[0].note ?? "",
         start: groupRows[0].start_date,
-        end: groupRows[0].end_date,
+        // end stocké = matin du départ (exclu) ; affiché = dernier jour inclus
+        end: addDaysISO(groupRows[0].end_date, -1),
         picks,
       };
     }
@@ -68,7 +69,7 @@ export function BookingDialog({
       name: savedName,
       note: "",
       start,
-      end: defaultEnd ?? addDaysISO(start, 1),
+      end: defaultEnd ?? start,
       picks,
     };
   }, [editGroupId, groupRows, houses, defaultHouseId, defaultStart, defaultEnd]);
@@ -81,11 +82,14 @@ export function BookingDialog({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const validRange = end > start;
+  // `end` = dernier jour inclus (affiché/choisi). En base, la fin reste
+  // exclusive (matin du départ), donc on stocke le lendemain.
+  const endExcl = addDaysISO(end, 1);
+  const validRange = end >= start;
 
   function setStartSafe(v: string) {
     setStart(v);
-    if (end <= v) setEnd(addDaysISO(v, 1));
+    if (end < v) setEnd(v);
   }
 
   function togglePick(id: string, remaining: number) {
@@ -103,7 +107,8 @@ export function BookingDialog({
   async function handleSave() {
     setError(null);
     if (!name.trim()) return setError("Indique un nom.");
-    if (!validRange) return setError("La date de départ doit suivre l'arrivée.");
+    if (!validRange)
+      return setError("Le dernier jour ne peut pas précéder l'arrivée.");
 
     const chosen = houses.filter((h) => picks[h.id]?.selected);
     if (chosen.length === 0) return setError("Choisis au moins une maison.");
@@ -114,7 +119,7 @@ export function BookingDialog({
         h,
         bookings,
         start,
-        end,
+        endExcl,
         editGroupId ?? undefined
       );
       if (occ < 1) return setError(`${h.name} : au moins 1 personne.`);
@@ -145,7 +150,7 @@ export function BookingDialog({
         house_id: h.id,
         guest_name: name.trim(),
         start_date: start,
-        end_date: end,
+        end_date: endExcl,
         occupants: picks[h.id].occupants,
         note: note.trim() || null,
       }));
@@ -249,11 +254,13 @@ export function BookingDialog({
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-medium">Départ</label>
+            <label className="mb-1.5 block text-sm font-medium">
+              Dernier jour
+            </label>
             <input
               type="date"
               value={end}
-              min={addDaysISO(start, 1)}
+              min={start}
               onChange={(e) => setEnd(e.target.value)}
               className="w-full rounded-lg border border-border bg-surface px-3 py-2.5 text-sm outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/10"
             />
@@ -270,7 +277,7 @@ export function BookingDialog({
                 h,
                 bookings,
                 start,
-                end,
+                endExcl,
                 editGroupId ?? undefined
               );
               const pick = picks[h.id];

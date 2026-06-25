@@ -4,7 +4,7 @@ import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import type { Car, CarBooking } from "@/lib/types";
 import { CAR_STATE_META, carState } from "@/lib/cars";
-import { formatHuman } from "@/lib/dates";
+import { addDaysISO, formatHuman } from "@/lib/dates";
 
 export function CarStatusCards({
   cars,
@@ -73,7 +73,7 @@ export function CarStatusCards({
                 <span className="font-medium text-text">
                   {current.guest_name}
                 </span>{" "}
-                jusqu&apos;au {formatHuman(current.end_date, refYear)}.
+                jusqu&apos;au {formatHuman(addDaysISO(current.end_date, -1), refYear)}.
               </p>
             )}
             {car.status === "au_garage" && (

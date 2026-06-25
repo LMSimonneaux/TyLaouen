@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase, supabaseConfigured } from "@/lib/supabase";
 import type { Car, CarBooking } from "@/lib/types";
-import { formatHuman, todayISO } from "@/lib/dates";
+import { addDaysISO, formatHuman, todayISO } from "@/lib/dates";
 import { Hero } from "./Hero";
 import { SiteNav } from "./SiteNav";
 import { CarTimeline } from "./CarTimeline";
@@ -218,7 +218,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...`}
                             {formatHuman(b.start_date, refYear)}
                           </div>
                           <div className="text-xs text-muted">
-                            → {formatHuman(b.end_date, refYear)}
+                            → {formatHuman(addDaysISO(b.end_date, -1), refYear)}
                           </div>
                         </div>
                         <div className="min-w-0 flex-1">

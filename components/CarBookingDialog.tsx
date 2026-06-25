@@ -40,7 +40,8 @@ export function CarBookingDialog({
         name: editRow.guest_name,
         note: editRow.note ?? "",
         start: editRow.start_date,
-        end: editRow.end_date,
+        // end stocké = matin exclu ; affiché = dernier jour inclus
+        end: addDaysISO(editRow.end_date, -1),
         carId: editRow.car_id,
       };
     }
@@ -51,7 +52,7 @@ export function CarBookingDialog({
       name: savedName,
       note: "",
       start,
-      end: defaultEnd ?? addDaysISO(start, 1),
+      end: defaultEnd ?? start,
       carId: defaultCarId ?? cars[0]?.id ?? "",
     };
   }, [editRow, cars, defaultCarId, defaultStart, defaultEnd]);
@@ -64,20 +65,23 @@ export function CarBookingDialog({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const validRange = end > start;
+  // `end` = dernier jour inclus (affiché/choisi). En base, la fin reste
+  // exclusive (matin de restitution), donc on stocke le lendemain.
+  const endExcl = addDaysISO(end, 1);
+  const validRange = end >= start;
 
   function setStartSafe(v: string) {
     setStart(v);
-    if (end <= v) setEnd(addDaysISO(v, 1));
+    if (end < v) setEnd(v);
   }
 
   async function handleSave() {
     setError(null);
     if (!name.trim()) return setError("Indique un nom.");
     if (!carId) return setError("Choisis une voiture.");
-    if (!validRange) return setError("La date de fin doit suivre le début.");
+    if (!validRange) return setError("La date de fin ne peut pas précéder le début.");
 
-    if (carBusyForRange(carId, bookings, start, end, editId ?? undefined)) {
+    if (carBusyForRange(carId, bookings, start, endExcl, editId ?? undefined)) {
       const car = cars.find((c) => c.id === carId);
       return setError(
         `${car?.name ?? "Cette voiture"} est déjà réservée sur cette période.`
@@ -90,7 +94,7 @@ export function CarBookingDialog({
         car_id: carId,
         guest_name: name.trim(),
         start_date: start,
-        end_date: end,
+        end_date: endExcl,
         note: note.trim() || null,
       };
 
@@ -205,7 +209,7 @@ export function CarBookingDialog({
             <input
               type="date"
               value={end}
-              min={addDaysISO(start, 1)}
+              min={start}
               onChange={(e) => setEnd(e.target.value)}
               className="w-full rounded-lg border border-border bg-surface px-3 py-2.5 text-sm outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/10"
             />
@@ -217,7 +221,7 @@ export function CarBookingDialog({
           <div className="space-y-2">
             {cars.map((c) => {
               const busy =
-                carBusyForRange(c.id, bookings, start, end, editId ?? undefined);
+                carBusyForRange(c.id, bookings, start, endExcl, editId ?? undefined);
               const selected = carId === c.id;
               const blocked = busy && !selected;
               return (
